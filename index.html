@@ -27,11 +27,13 @@
         // установить высоту iframe равной высоте экрана
         var iframe = document.getElementById('iframe');
         iframe.style.height = window.innerHeight - 20 + 'px';
+        var iframe = document.getElementById('navigation');
+        iframe.style.height = window.innerHeight - 20 + 'px';
     }
 </script>
 
 <body>
-        <div style="background-color: #96ade9; float:left; width:19%; border: 1px solid black; height:100%; font-family: Courier New;"> 
+        <div id="navigation" style="background-color: #96ade9; float:left; width:19%; border: 1px solid black; height:100%; font-family: Courier New;"> 
             <center><h1>Lost Colony v0.1</h1></center>
             <p style="margin-left:10px">Меню</p>
                 <ul>
@@ -51,7 +53,7 @@
                             <li onclick="loadPage('content/part_6/armor.html')">Броня и щиты</li>
                         </ul>
                 </ul>
-                <div style="position:absolute; bottom:0;"><center><i>&copy; Лэпть, 2025</i></center></div>
+                <div style="vertical-align: bottom"><center><i>&copy; Лэпть, 2025</i></center></div>
         </div>
         <div style="float:right; width:80%; height:100%">
             <iframe id="iframe" src="content/part_1/main.html" width="100%" onload=setHeight()></iframe>

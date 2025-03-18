@@ -1,5 +1,5 @@
 select{
-    background-image: url('/img/svg/search.png'); /* Add a search icon to input */
+    background-image: url('./img/svg/search.png'); /* Add a search icon to input */
     background-position: 5px 5px; /* Position the search icon */
     background-repeat: no-repeat; /* Do not repeat the icon image */
     width: 20%; /* Full-width */
@@ -30,7 +30,7 @@ h1, h2, h3, h4, b
   }
 
 #myInput {
-    background-image: url('/img/svg/search.png'); /* Add a search icon to input */
+    background-image: url('./img/svg/search.png'); /* Add a search icon to input */
     background-position: 5px 5px; /* Position the search icon */
     background-repeat: no-repeat; /* Do not repeat the icon image */
     width: 50%; /* Full-width */
