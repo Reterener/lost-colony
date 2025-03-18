@@ -1,0 +1,522 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../../style.css">
+    </head>
+    <script>
+        function myFunction() {
+          // Declare variables
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function sortTable(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("myTable");
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc"; 
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;      
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function sortNumeric(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("myTable");
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc"; 
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                if(rows[i].getElementsByTagName("TD").length != 7) continue;
+            
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;      
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function filterTableByType() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("type");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1 || filter == "all") {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function hide(id) {
+        var x = document.getElementById(id);
+        // скрыть элементы ниже
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+        }
+
+        // функция showRow скрывает строку-отправителя и показывает строку с Id, переданным в параметре
+        function showRow(id) {
+        var y = document.getElementById(id);
+        var x = document.getElementById(id+"2");
+        // скрыть элементы ниже
+        if (x.style.display === "none") {
+            x.style.display = "table-row";
+            y.style.display = "none";
+        } else {
+            x.style.display = "none";
+            y.style.display = "table-row";
+        }
+        }
+
+        //функция, которая перекрасит строки таблицы
+        function colorizeTable() {
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
+            var a = 0;
+            for (var i = 0; i < rows.length; i++) {
+                if(rows[i].style.display === "none") continue;
+                if (a % 2 == 0) {
+                    rows[i].style.backgroundColor = "#fff";
+                } else {
+                    rows[i].style.backgroundColor = "#96ade9";
+                }
+                a++;
+            }
+        }
+
+        </script>
+
+    <body onload="sortTable(0)">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Название..." width="50%">
+        <dropdown width="20%" onchange="filterTableByType()">
+            <select id="type" name="type">
+                <option value="">Все типы</option>
+                <option value="Простое рукопашное">Простое рукопашное</option>
+                <option value="Экспертное рукопашное">Экспертное рукопашное</option>
+                <option value="Простое лазерное">Простое лазерное</option>
+                <option value="Экспертное лазерное">Экспертное лазерное</option>
+                <option value="Простое огнестрельное">Простое огнестрельное</option>
+                <option value="Экспертное огнестрельное">Экспертное огнестрельное</option>
+            </select>
+        </dropdown>
+        
+        <table id="myTable">
+          <tr class="header">
+            <th onclick="sortTable(0)">Название <img src="/img/svg/filter.png" width="11px"></th>
+            <th>Тип</th>
+            <th>Урон</th>
+            <th>Дальность</th>
+            <th>Вес</th>
+            <th>Свойства</th>
+            <th onclick="sortNumeric(6)">Цена <img src="/img/svg/filter.png" width="11px"></th>
+          </tr>
+            <tr>
+                <td>Кастет</td>
+                <td>Простое рукопашное</td>
+                <td>1d8 физический</td>
+                <td></td>
+                <td>0.5 фт</td>
+                <td>Лёгкое</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>Нож</td>
+                <td>Простое рукопашное</td>
+                <td>1d8 физический</td>
+                <td></td>
+                <td>1 фт</td>
+                <td>Лёгкое, Метательное (дис. 20/60), Фехтовальное</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Дубинка законника</td>
+                <td>Простое рукопашное</td>
+                <td>1d10 физический</td>
+                <td></td>
+                <td>3 фт</td>
+                <td>-</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>Шокер</td>
+                <td>Простое рукопашное</td>
+                <td>1d6 электричеством</td>
+                <td></td> 
+                <td>1 фт</td>
+                <td>Лёгкое</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>Пожарный топор</td>
+                <td>Простое рукопашное</td>
+                <td>2d10 физический</td>
+                <td></td>
+                <td>6 фт</td>
+                <td>Двуручное</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>Лезвие для брони</td>
+                <td>Простое рукопашное</td>
+                <td>1d8 физический</td>
+                <td></td>
+                <td>0.5 фт</td>
+                <td>Встраиваемое, Лёгкое, Фехтовальное</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>Мачете</td>
+                <td>Простое рукопашное</td>
+                <td>2d8 физический</td>
+                <td></td>
+                <td>3 фт</td>
+                <td>Универсальное(2d10), Фехтовальное</td>
+                <td>500</td>
+            </tr>
+            <tr>
+                <td>Кат-перчатка</td>
+                <td>Экспертное рукопашное</td>
+                <td>1d10 физический</td>
+                <td></td>
+                <td>1 фт</td>
+                <td>Лёгкое, Стихийное(Излучение, Лёд, Огонь)</td>
+                <td>700</td>
+            </tr>
+            <tr>
+                <td>Магнитная сфера</td>
+                <td>Экспертное рукопашное</td>
+                <td>2d6 физический</td>
+                <td></td>
+                <td>1 фт</td>
+                <td>Встраиваемое, Бумеранг, Метательное (дис. 30/90), Фехтовальное</td>
+                <td>2500</td>
+            </tr>
+            <tr>
+                <td>Вибро-меч</td>
+                <td>Экспертное рукопашное</td>
+                <td>3d6 физический</td>
+                <td></td>
+                <td>4 фт</td>
+                <td>Универсальное(3d8)</td>
+                <td>3000</td>
+            </tr>
+            <tr>
+                <td>Вибро-топор</td>
+                <td>Экспертное рукопашное</td>
+                <td>3d10 физический</td>
+                <td></td>
+                <td>10 фт</td>
+                <td>Двуручное</td>
+                <td>5000</td>
+            </tr>
+            <tr>
+                <td>Световой меч</td>
+                <td>Экспертное рукопашное</td>
+                <td>3d8 излучением</td>
+                <td></td>
+                <td>2 фт</td>
+                <td>Универсальное(3d10), Фехтовальное</td>
+                <td>15000</td>
+            </tr>
+            <tr>
+                <td>Лазерный пистолет</td>
+                <td>Простое лазерное</td>
+                <td>1d6 излучением</td>
+                <td>50/150</td>
+                <td>1 фт</td>
+                <td>Лёгкое, Перегрев(1)</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>Лазерный карабин</td>
+                <td>Простое лазерное</td>
+                <td>1d10 излучением</td>
+                <td>80/240</td>
+                <td>4 фт</td>
+                <td>Перегрев(1)</td>
+                <td>350</td>
+            </tr>
+            <tr>
+                <td>Лазерный повторитель</td>
+                <td>Простое лазерное</td>
+                <td>1d6 излучением</td>
+                <td>60/180</td>
+                <td>6 фт</td>
+                <td>Двуручное, Перегрев(1), Очередь(2)</td>
+                <td>500</td>
+            </tr>
+            <tr>
+                <td>Лазерная винтовка</td>
+                <td>Простое лазерное</td>
+                <td>1d12 излучением</td>
+                <td>100/300</td>
+                <td>6 фт</td>
+                <td>Двуручное, Перегрев(3), Тяжелое</td>
+                <td>800</td>
+            </tr>
+            <tr>
+                <td>Лазерный распылитель</td>
+                <td>Простое лазерное</td>
+                <td>3d6 излучением</td>
+                <td>30/30</td>
+                <td>8 фт</td>
+                <td>Двуручное, Перегрев(3), Конус(15), Тяжелое</td>
+                <td>1500</td>
+            </tr>
+            <tr>
+                <td>Прямой луч</td>
+                <td>Экспертное лазерное</td>
+                <td>1d10 излучением</td>
+                <td>90/270</td>
+                <td>2 фт</td>
+                <td>Лёгкое, Перегрев(3)</td>
+                <td>1000</td>
+            </tr>
+            <tr>
+                <td>Барабанный лазер</td>
+                <td>Экспертное лазерное</td>
+                <td>1d8 излучением</td>
+                <td>80/240</td>
+                <td>6 фт</td>
+                <td>Двуручное, Перегрев(1), Очередь(2), Тяжелое</td>
+                <td>2000</td>
+            </tr>
+            <tr>
+                <td>Лазган</td>
+                <td>Экспертное лазерное</td>
+                <td>2d8 излучением</td>
+                <td>100/300</td>
+                <td>7 фт</td>
+                <td>Двуручное, Перегрев(2), Тяжелое</td>
+                <td>2500</td>
+            </tr>
+            <tr>
+                <td>Фокус-лазер</td>
+                <td>Экспертное лазерное</td>
+                <td>2d10 излучением</td>
+                <td>150/450</td>
+                <td>8 фт</td>
+                <td>Двуручное, Перегрев(6)</td>
+                <td>3500</td>
+            </tr>
+            <tr>
+                <td>Лучевой подавитель</td>
+                <td>Экспертное лазерное</td>
+                <td>1d6 излучением</td>
+                <td>80/240</td>
+                <td>20 фт</td>
+                <td>Двуручное, Перегрев(1), Очередь(4), Тяжелое</td>
+                <td>5000</td>
+            </tr>
+            <tr>
+                <td>Светошот</td>
+                <td>Экспертное лазерное</td>
+                <td>3d8 излучением</td>
+                <td>25/25</td>
+                <td>12 фт</td>
+                <td>Двуручное, Перегрев(5), Конус(20), Тяжелое</td>
+                <td>5000</td>
+            </tr>
+            <tr>
+                <td>Пистолет</td>
+                <td>Простое огнестрельное</td>
+                <td>1d8 физический</td>
+                <td>70/210</td>
+                <td>1 фт</td>
+                <td>Лёгкое, Боеприпас: 10(Пистолетный)</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>ПП</td>
+                <td>Простое огнестрельное</td>
+                <td>1d8 физический</td>
+                <td>70/210</td>
+                <td>2.5 фт</td>
+                <td>Очередь(2), Боеприпас: 8(Пистолетный)</td>
+                <td>250</td>
+            </tr>
+            <tr>
+                <td>Дробовик</td>
+                <td>Простое огнестрельное</td>
+                <td>2d10 физический</td>
+                <td>25/75</td>
+                <td>10 фт</td>
+                <td>Двуручное, Тяжелое, Конус(15), Боеприпас: 4(Винтовочный)</td>
+                <td>500</td>
+            </tr>
+            <tr>
+                <td>Винтовка</td>
+                <td>Простое огнестрельное</td>
+                <td>2d8 физический</td>
+                <td>130/390</td>
+                <td>8 фт</td>
+                <td>Двуручное, Боеприпас: 5(Винтовочный)</td>
+                <td>700</td>
+            </tr>
+            <tr>
+                <td>Револьвер</td>
+                <td>Экспертное огнестрельное</td>
+                <td>1d12 физический</td>
+                <td>90/270</td>
+                <td>2 фт</td>
+                <td>Лёгкое, Боеприпас: 6(Пистолетный)</td>
+                <td>300</td>
+            </tr>
+            <tr>
+                <td>Автомат</td>
+                <td>Экспертное огнестрельное</td>
+                <td>1d10 физический</td>
+                <td>110/330</td>
+                <td>8 фт</td>
+                <td>Двуручное, Тяжелое, Очередь(2), Боеприпас: 12(Винтовочный)</td>
+                <td>1000</td>
+            </tr>
+            <tr>
+                <td>Кусачий дробовик</td>
+                <td>Экспертное огнестрельное</td>
+                <td>3d10 физический</td>
+                <td>20/60</td>
+                <td>12 фт</td>
+                <td>Двуручное, Тяжелое, Конус(15), Боеприпас: 3(Винтовочный)</td>
+                <td>1800</td>
+            </tr>
+            <tr>
+                <td>Тяжелая винтовка</td>
+                <td>Экспертное огнестрельное</td>
+                <td>2d10 физический</td>
+                <td>150/450</td>
+                <td>12 фт</td>
+                <td>Двуручное, Боеприпас: 5(Винтовочный)</td>
+                <td>2500</td>
+            </tr>
+            <tr>
+                <td>Пехотная пушка</td>
+                <td>Экспертное огнестрельное</td>
+                <td>3d12 физический</td>
+                <td>200/600</td>
+                <td>25 фт</td>
+                <td>Двуручное, Тяжелое, Боеприпас: 2(Винтовочный)</td>
+                <td>10000</td>
+            </tr>
+            
+</table> 
+    </body>
+</html>

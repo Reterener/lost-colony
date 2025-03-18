@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Lost Colony 5e</title>
+</head>
+
+<script>
+    function hide(id) {
+        var x = document.getElementById(id);
+        // скрыть элементы ниже
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    function loadPage(page) {
+        document.getElementById('iframe').src = page;
+    }
+
+    function setHeight() {
+        // установить высоту iframe равной высоте экрана
+        var iframe = document.getElementById('iframe');
+        iframe.style.height = window.innerHeight - 20 + 'px';
+    }
+</script>
+
+<body>
+        <div style="background-color: #96ade9; float:left; width:19%; border: 1px solid black; height:100%; font-family: Courier New;"> 
+            <center><h1>Lost Colony v0.1</h1></center>
+            <p style="margin-left:10px">Меню</p>
+                <ul>
+                    <li onclick="hide('group1')">Часть 1</li>
+                        <ul id="group1" style="display:none">    
+                            <li><a>Подраздел 1</a></li>
+                            <li><a>Подраздел 2</a></li>
+                        </ul>
+                    <li onclick="loadPage('content/part_1/a.html')">Часть 2</li>
+                    <li>Часть 3</li>
+                    <li>Часть 4</li>
+                    <li>Часть 5</li>
+                    <li onclick="hide('group6')">Часть 6: Снаряжение</li>
+                        <ul id="group6" style="display:none">   
+                            <li onclick="loadPage('content/part_6/about.html')">Информация, Свойства</li> 
+                            <li onclick="loadPage('content/part_6/weapon.html')">Оружие</li>
+                            <li onclick="loadPage('content/part_6/armor.html')">Броня и щиты</li>
+                        </ul>
+                </ul>
+                <div style="position:absolute; bottom:0;"><center><i>&copy; Лэпть, 2025</i></center></div>
+        </div>
+        <div style="float:right; width:80%; height:100%">
+            <iframe id="iframe" src="content/part_1/main.html" width="100%" onload=setHeight()></iframe>
+        </div>
+</body>
+</html>

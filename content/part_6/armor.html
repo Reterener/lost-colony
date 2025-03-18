@@ -1,0 +1,333 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../../style.css">
+    </head>
+
+    <script>
+        function myFunction() {
+          // Declare variables
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function sortTable(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("myTable");
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc"; 
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;      
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function sortNumeric(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("myTable");
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc"; 
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                if(rows[i].getElementsByTagName("TD").length != 7) continue;
+            
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;      
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function filterTableByType() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("type");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1 || filter == "all") {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+          colorizeTable();
+        }
+        //функция, которая перекрасит строки таблицы
+        function colorizeTable() {
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
+            var a = 0;
+            for (var i = 0; i < rows.length; i++) {
+                if(rows[i].style.display === "none") continue;
+                if (a % 2 == 0) {
+                    rows[i].style.backgroundColor = "#fff";
+                } else {
+                    rows[i].style.backgroundColor = "#96ade9";
+                }
+                a++;
+            }
+        }
+
+        </script>
+
+    <body onload="sortNumeric(6)">
+        <h1>Броня и щиты</h1>
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Название..." width="50%">
+        <dropdown width="20%" onchange="filterTableByType()">
+            <select id="type" name="type">
+                <option value="">Все типы</option>
+                <option value="Лёгкая">Лёгкая</option>
+                <option value="Средняя">Средняя</option>
+                <option value="Тяжелая">Тяжелая</option>
+                <option value="Щит">Щит</option>
+            </select>
+        </dropdown>
+        <table id="myTable">
+            <tr class="header">
+              <th onclick="sortTable(0)">Название <img src="/img/svg/filter.png" width="11px"></th>
+              <th>Тип</th>
+              <th>Кд</th>
+              <th>Сила</th>
+              <th>Вес</th>
+              <th>Свойства</th>
+              <th onclick="sortNumeric(6)">Цена <img src="/img/svg/filter.png" width="11px"></th>
+            </tr>
+            <tr>
+                <td>Костюм космонавта</td>
+                <td>Лёгкая</td>
+                <td>11 + мод. ЛОВ</td>
+                <td>-</td>
+                <td>10 фт</td>
+                <td>-</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>Звёздный комплект</td>
+                <td>Лёгкая</td>
+                <td>12 + мод. ЛОВ</td>
+                <td>-</td>
+                <td>13 фт</td>
+                <td>-</td>
+                <td>900</td>
+            </tr>
+            <tr>
+                <td>Бронекостюм диверсанта</td>
+                <td>Лёгкая</td>
+                <td>13 + мод. ЛОВ</td>
+                <td>-</td>
+                <td>17 фт</td>
+                <td>-</td>
+                <td>3500</td>
+            </tr>            
+            <tr>
+                <td>Укреплённый звёздный комплект</td>
+                <td>Средняя</td>
+                <td>13 + мод. ЛОВ (макс. 2)</td>
+                <td>-</td>
+                <td>18 фт</td>
+                <td>-</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>Комлект колониального стража</td>
+                <td>Средняя</td>
+                <td>14 + мод. ЛОВ (макс. 2)</td>
+                <td>-</td>
+                <td>25 фт</td>
+                <td>-</td>
+                <td>1000</td>
+            </tr>
+            <tr>
+                <td>Бронекомплект космопеха</td>
+                <td>Средняя</td>
+                <td>15 + мод. ЛОВ (макс. 2)</td>
+                <td>-</td>
+                <td>35 фт</td>
+                <td>Помеха на скрытность</td>
+                <td>8000</td>
+            </tr>
+            <tr>
+                <td>Офицерский бронекомплект</td>
+                <td>Средняя</td>
+                <td>15 + мод. ЛОВ (макс. 2)</td>
+                <td>-</td>
+                <td>25 фт</td>
+                <td>-</td>
+                <td>12000</td>
+            </tr>
+            <tr>
+                <td>Облегчённый экзокостюм</td>
+                <td>Средняя</td>
+                <td>17 + мод. ЛОВ (макс. 2)</td>
+                <td>-</td>
+                <td>45 фт</td>
+                <td>Помеха на скрытность</td>
+                <td>30000</td>
+            </tr>
+            <tr>
+                <td>Колониальный бронекомплект</td>
+                <td>Тяжелая</td>
+                <td>15</td>
+                <td>-</td>
+                <td>45 фт</td>
+                <td>-</td>
+                <td>600</td>
+            </tr>
+            <tr>
+                <td>Бронекомплект космодесантника</td>
+                <td>Тяжелая</td>
+                <td>16</td>
+                <td>13</td>
+                <td>55 фт</td>
+                <td>Помеха на скрытность</td>
+                <td>1500</td>
+            </tr>
+            <tr>
+                <td>Закалённый экзокостюм</td>
+                <td>Тяжелая</td>
+                <td>18</td>
+                <td>15</td>
+                <td>60 фт</td>
+                <td>Помеха на скрытность</td>
+                <td>12000</td>
+            </tr>
+            <tr>
+                <td>Титановый экзокостюм</td>
+                <td>Тяжелая</td>
+                <td>20</td>
+                <td>15</td>
+                <td>70 фт</td>
+                <td>Помеха на скрытность</td>
+                <td>35000</td>
+            </tr>
+            <tr>
+                <td>Щит космопехотинца</td>
+                <td>Щит</td>
+                <td>+2</td>
+                <td>11</td>
+                <td>10 фт</td>
+                <td>-</td>
+                <td>500</td>
+            </tr>
+            <tr>
+                <td>МК1-"Тупик"</td>
+                <td>Щит</td>
+                <td>+3</td>
+                <td>15</td>
+                <td>20 фт</td>
+                <td>Вы можете использовать только "Лёгкое"
+                    оружие, пока вы держите этот щит.</td>
+                <td>2000</td>
+            </tr>
+    </body>
+</html>
