@@ -1,0 +1,310 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../../style.css">
+    </head>
+
+    <script>
+        
+        function myFunction() {
+          // Declare variables
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function sortNumeric(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("myTable");
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc"; 
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                if(rows[i].getElementsByTagName("TD").length != 5) continue;
+            
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;      
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function filterTableByType() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("type");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1 || filter == "all") {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function colorizeTable() {
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
+            var a = 0;
+            for (var i = 0; i < rows.length; i++) {
+                if(rows[i].style.display === "none") continue;
+                if (a % 2 == 0) {
+                    rows[i].style.backgroundColor = "#fff";
+                } else {
+                    rows[i].style.backgroundColor = "#96ade9";
+                }
+                a++;
+            }
+        }
+    </script>
+
+    <body onload="colorizeTable()">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Название..." width="50%">
+        <dropdown width="20%" onchange="filterTableByType()">
+            <select id="type" name="type">
+                <option value="">Все типы</option>
+                <option value="Техническое снаряжение">Техническое снаряжение</option>
+                <option value="Расходник">Расходник</option>
+                <option value="Инструмент">Инструмент</option>
+                <option value="Материал">Материал</option>
+            </select>
+        </dropdown>
+        <table id="myTable">
+            <tr class="header">
+              <th>Название</th>
+              <th>Тип</th>
+              <th>Вес</th>
+              <th>Описание</th>
+              <th onclick="sortNumeric(4)">Цена <img src="../../img/svg/filter.png" width="11px"></th>
+            </tr>
+            <tr>
+            <td>Датапад</td>
+            <td>Техническое снаряжение</td>
+            <td>1 фт</td>
+            <td>Датапад - это простейший компьютер, который может использоваться для хранения электронной информации, доступа в сеть, взаимодействия с простейшим техническим оборудованем или для связи.</td>
+            <td>250</td>
+        </tr>
+        <tr>
+            <td>Коммуникатор</td>
+            <td>Техническое снаряжение</td>
+            <td>0.1 фт</td>
+            <td>Позволяет устанавливать связь и вести голосовое общение с другими обладателями коммуникаторов.</td>
+            <td>50</td>
+        </tr>
+        <tr>
+            <td>Гражданский инструментрон</td>
+            <td>Техническое снаряжение</td>
+            <td>1 фт</td>
+            <td>Мультифункциональный инструмент, содержащий в себя функции датапада и инструментов хакера. Необходим для использования некоторых техник инженера. Может использоваться как оружие ближнего боя, которое не требует свободной руки и обладающее свойством "фехтовальное". Оно наносит 1d8 + мод. характеристики физического урона.</td>
+            <td>1500</td>
+        </tr>
+        <tr>
+            <td>Военный инструментрон</td>
+            <td>Техническое снаряжение</td>
+            <td>1 фт</td>
+            <td>Мультифункциональный инстумент, содержащий в себя функции датапада, инструментов хакера, инструментов взломщика и малого набора инженера. Необходим для использования некоторых продвинутых техник инженера. Может использоваться как оружие ближнего боя, которое не требует свободной руки и обладающее свойством "фехтовальное". Оно наносит 1d12 + мод. характеристики физического урона</td>
+            <td>10000</td>
+        </tr>
+        <tr>
+            <td>Малый набор инженера</td>
+            <td>Техническое снаряжение</td>
+            <td>2 фт</td>
+            <td>Простой набор разных модулей и снарядов. Необходим для использования некоторых базовых техник инженера. Может быть разобран на 2 случайные инженерные техники I-ого ранга. (Или 2 конкретные, при владении инструментами жестянщика.)</td>
+            <td>400</td>
+        </tr>
+        <tr>
+            <td>Военный набор инженера</td>
+            <td>Техническое снаряжение</td>
+            <td>5 фт</td>
+            <td>Продвинутый набор разных модулей и снарядов. Необходим для использования некоторых продвинутых техник инженера. Может быть разобран на 2 случайные инженерные техники III-ого ранга или ниже. (Или 2 конкретные, при владении инструментами жестянщика.)</td>
+            <td>2500</td>
+        </tr>
+        <tr>
+            <td>Инженерный набор специального назначения</td>
+            <td>Техническое снаряжение</td>
+            <td>8 фт</td>
+            <td>Специализированный набор, необходимый для использования сложнейших техник инженера. Может быть разобран на 2 случайные инженерные техники IV-ого ранга или ниже. (Или 2 конкретные, при владении инструментами жестянщика.)</td>
+            <td>15000</td>
+        </tr>
+        <tr>
+            <td>Разбавленный стимулятор</td>
+            <td>Расходник</td>
+            <td>0.5 фт</td>
+            <td>Действием вы можете восстановить себе или существу в пределах 5 футов от вас 2d4+2 хита.</td>
+            <td>250</td>
+        </tr>
+        <tr>
+            <td>Стимулятор</td>
+            <td>Расходник</td>
+            <td>0.5 фт</td>
+            <td>Действием вы можете восстановить себе или существу в пределах 5 футов от вас 4d4+4 хита.</td>
+            <td>600</td>
+        </tr>
+        <tr>
+            <td>Военный стимулятор</td>
+            <td>Расходник</td>
+            <td>1 фт</td>
+            <td>Действием вы можете восстановить себе или существу в пределах 5 футов от вас 8d4+8 хита.</td>
+            <td>1500</td>
+        </tr>
+        <tr>
+            <td>Суперстимулятор</td>
+            <td>Расходник</td>
+            <td>1 фт</td>
+            <td>Действием вы можете восстановить себе или существу в пределах 5 футов от вас 16d4+16 хита.</td>
+            <td>3500</td>
+        </tr>
+        <tr>
+            <td>Сухпай</td>
+            <td>Расходник</td>
+            <td>2 фт</td>
+            <td>Набор безвкусной, но не портящейся еды, способный насытить вас на целый день.</td>
+            <td>5</td>
+        </tr>
+        <tr>
+            <td>Лазерная батарея</td>
+            <td>Расходник</td>
+            <td>0.5 фт</td>
+            <td>Лазерная батарея, способная запитать любое лазерное оружие на территории Земной Федерации. Одна батарея способна служить практически вечность, только если пользователь по своей глупости не перегреет её.</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Пистолетный бокс</td>
+            <td>Расходник</td>
+            <td>0.5 фт</td>
+            <td>Один зарядный магазин или барабан пистолетного калибра.</td>
+            <td>50</td>
+        </tr>
+        <tr>
+            <td>Винтовочный бокс</td>
+            <td>Расходник</td>
+            <td>1 фт</td>
+            <td>Один зарядный магазин винтовочного калибра.</td>
+            <td>200</td>
+        </tr>
+        <tr>
+            <td>Набор хакера</td>
+            <td>Инструмент</td>
+            <td>1 фт</td>
+            <td>Флешки, переходники и прочие принадлежности, необходимые для взлома электроники разного рода.</td>
+            <td>500</td>
+        </tr>
+        <tr>
+            <td>Набор взломщика</td>
+            <td>Инструмент</td>
+            <td>5 фт</td>
+            <td>Ломик, отмычки и прочие инструменты, необходимые для физического вскрытия чего-либо.</td>
+            <td>300</td>
+        </tr>
+        <tr>
+            <td>Набор взрывотехника</td>
+            <td>Инструмент</td>
+            <td>5 фт</td>
+            <td>Взрывчатые компоненты, а также инструменты для сборки и разборки взрывчатки.</td>
+            <td>600</td>
+        </tr>
+        <tr>
+            <td>Набор оружейника</td>
+            <td>Инструмент</td>
+            <td>4 фт</td>
+            <td>Набор, необходимый для манипуляций с оружием и приведением его в порядок.</td>
+            <td>400</td>
+        </tr>
+        <tr>
+            <td>Набор бронника</td>
+            <td>Инструмент</td>
+            <td>4 фт</td>
+            <td>Набор, необходимый для манипуляций с бронёй и приведением её в порядок.</td>
+            <td>400</td>
+        </tr>
+        <tr>
+            <td>Набор химика</td>
+            <td>Инструмент</td>
+            <td>3 фт</td>
+            <td>Набор компонентов, тестеров и прочего, необходимый для базовых тестов и полевого изготовления препаратов.</td>
+            <td>1000</td>
+        </tr>
+        <tr>
+            <td>Набор жестянщика</td>
+            <td>Инструмент</td>
+            <td>4 фт</td>
+            <td>Набор, предназначенный для ремонта и обслуживания небоевого оборудования.</td>
+            <td>250</td>
+        </tr>
+        <tr>
+            <td>Полезные материалы</td>
+            <td>Материал</td>
+            <td>1 фт</td>
+            <td>Куча разных полезных металлических материалов и проводов.</td>
+            <td>50</td>
+        </tr>
+    <body>
+
+    </body>
+</html>

@@ -1,0 +1,151 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../../style.css">
+    </head>
+
+    <script>
+        function sortNumeric(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("myTable");
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc"; 
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                if(rows[i].getElementsByTagName("TD").length != 4) continue;
+            
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;      
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+          colorizeTable();
+        }
+
+        function colorizeTable() {
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
+            var a = 0;
+            for (var i = 0; i < rows.length; i++) {
+                if(rows[i].style.display === "none") continue;
+                if (a % 2 == 0) {
+                    rows[i].style.backgroundColor = "#fff";
+                } else {
+                    rows[i].style.backgroundColor = "#96ade9";
+                }
+                a++;
+            }
+        }
+    </script>
+
+    <body onload="colorizeTable()">
+        <table id="myTable">
+            <tr class="header">
+              <th>Название</th>
+              <th onclick="sortNumeric(1)">Показатель щита <img src="../../img/svg/filter.png" width="11px"></th>
+              <th>Вес</th>
+              <th onclick="sortNumeric(3)">Цена <img src="../../img/svg/filter.png" width="11px"></th>
+            </tr>
+            <tr>
+              <td>Шахтёрский щит</td>
+              <td>5</td>
+              <td>1 фт</td>
+              <td>300</td>
+            </tr>
+            <tr>
+              <td>Исследовательская щитовая матрица</td>
+              <td>10</td>
+              <td>1 фт</td>
+              <td>1000</td>
+            </tr>
+            <tr>
+              <td>Щит космопехотинца</td>
+              <td>15</td>
+              <td>1 фт</td>
+              <td>2500</td>
+            </tr>
+            <tr>
+              <td>Непробиваемый</td>
+              <td>20</td>
+              <td>2 фт</td>
+              <td>8000</td>
+            </tr>
+            <tr>
+              <td>Щитовой генератор "Фортресс"</td>
+              <td>25</td>
+              <td>2 фт</td>
+              <td>15000</td>
+            </tr>
+            <tr>
+              <td>Модуль "Эгида"</td>
+              <td>30</td>
+              <td>2.5 фт</td>
+              <td>25000</td>
+            </tr>
+            <tr>
+              <td>Щитовой генератор "Спецагент"</td>
+              <td>35</td>
+              <td>2.5 фт</td>
+              <td>40000</td>
+            </tr>
+            <tr>
+              <td>Модуль "Имперская стена"</td>
+              <td>40</td>
+              <td>3 фт</td>
+              <td>55000</td>
+            </tr>
+            <tr>
+              <td>П.Г. "Фотон"</td>
+              <td>45</td>
+              <td>3 фт</td>
+              <td>75000</td>
+            </tr>
+            <tr>
+              <td>Экспериментальный плазменный щит</td>
+              <td>50</td>
+              <td>3 фт</td>
+              <td>100000</td>
+            </tr>
+            </table>
+    </body>
+</html>
