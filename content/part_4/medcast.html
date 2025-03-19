@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица с сортировкой, фильтром и подробностями</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        #filterBox, #searchBox {
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        th {
+            cursor: pointer;
+        }
+        .details {
+            display: none; /* Скрываем строки с дополнительной информацией по умолчанию */
+        }
+    </style>
+</head>
+<body>
+
+<h2>Таблица с сортировкой, фильтром по оценке и подробностями</h2>
+
+<!-- Строка поиска -->
+<label for="searchBox">Поиск: </label>
+<input type="text" id="searchBox" placeholder="Введите текст для поиска...">
+
+<!-- Выборка фильтра для чисел в колонке "Оценка" -->
+<label for="filterBox">Выберите оценку (0-5): </label>
+<select id="filterBox">
+    <option value="">Все</option>
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+</select>
+
+<table id="infoTable">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Оценка (0-5)</th>
+            <th>Категория</th>
+            <th>Дата</th>
+            <th>Автор</th> <!-- Новая колонка -->
+            <th>Статус</th> <!-- Новая колонка -->
+            <th>Комментарий</th> <!-- Новая колонка -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-details="details1">
+            <td>Пример 1</td>
+            <td class="rating">4</td>
+            <td>Категория A</td>
+            <td>2025-03-19</td>
+            <td>Иван Иванов</td> <!-- Новое значение -->
+            <td>Активен</td> <!-- Новое значение -->
+            <td>Тестовый комментарий для Примера 1.</td> <!-- Новое значение -->
+        </tr>
+        <tr class="details details1">
+            <td colspan="7">
+                <p>Дополнительная информация для Примера 1. Тут может быть что угодно: описание, подробности и так далее.</p>
+            </td>
+        </tr>
+
+        <tr data-details="details2">
+            <td>Пример 2</td>
+            <td class="rating">2</td>
+            <td>Категория B</td>
+            <td>2025-03-20</td>
+            <td>Мария Петрова</td> <!-- Новое значение -->
+            <td>Завершен</td> <!-- Новое значение -->
+            <td>Комментарий для Примера 2.</td> <!-- Новое значение -->
+        </tr>
+        <tr class="details details2">
+            <td colspan="7">
+                <p>Дополнительная информация для Примера 2.</p>
+            </td>
+        </tr>
+
+        <tr data-details="details3">
+            <td>Пример 3</td>
+            <td class="rating">5</td>
+            <td>Категория C</td>
+            <td>2025-03-21</td>
+            <td>Олег Сидоров</td> <!-- Новое значение -->
+            <td>Активен</td> <!-- Новое значение -->
+            <td>Комментарий для Примера 3.</td> <!-- Новое значение -->
+        </tr>
+        <tr class="details details3">
+            <td colspan="7">
+                <p>Дополнительная информация для Примера 3.</p>
+            </td>
+        </tr>
+
+        <tr data-details="details4">
+            <td>Пример 4</td>
+            <td class="rating">1</td>
+            <td>Категория D</td>
+            <td>2025-03-22</td>
+            <td>Анна Кузнецова</td> <!-- Новое значение -->
+            <td>Завершен</td> <!-- Новое значение -->
+            <td>Комментарий для Примера 4.</td> <!-- Новое значение -->
+        </tr>
+        <tr class="details details4">
+            <td colspan="7">
+                <p>Дополнительная информация для Примера 4.</p>
+            </td>
+        </tr>
+
+        <tr data-details="details5">
+            <td>Пример 5</td>
+            <td class="rating">3</td>
+            <td>Категория E</td>
+            <td>2025-03-23</td>
+            <td>Сергей Волков</td> <!-- Новое значение -->
+            <td>Активен</td> <!-- Новое значение -->
+            <td>Комментарий для Примера 5.</td> <!-- Новое значение -->
+        </tr>
+        <tr class="details details5">
+            <td colspan="7">
+                <p>Дополнительная информация для Примера 5.</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    // Функция для сортировки таблицы по выбранной колонке
+    function sortTable(n, ascending = true) {
+        const rows = Array.from(document.querySelectorAll("tbody tr:not(.details)"));
+        
+        rows.sort((rowA, rowB) => {
+            let valueA = rowA.cells[n].textContent.trim();
+            let valueB = rowB.cells[n].textContent.trim();
+
+            // Преобразуем в числа для оценки
+            if (n === 1) {
+                valueA = parseInt(valueA);
+                valueB = parseInt(valueB);
+            }
+
+            if (ascending) {
+                return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+            } else {
+                return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+            }
+        });
+
+        // Перемещаем строки в tbody
+        const tbody = document.querySelector("tbody");
+        rows.forEach(row => {
+            tbody.appendChild(row);  // Перемещаем строки на новые позиции
+            const detailsRow = document.querySelector(`.details.${row.getAttribute('data-details')}`);
+            if (detailsRow) {
+                tbody.appendChild(detailsRow);  // Перемещаем строку с деталями рядом
+            }
+        });
+
+        // Обновляем обработчики кликов после сортировки
+        addRowClickEvent();
+    }
+
+    // Добавляем возможность сортировать по первой и второй колонке
+    const headerCells = document.querySelectorAll("th");
+    headerCells[0].addEventListener("click", () => {
+        const isAscending = headerCells[0].getAttribute("data-sort") === "asc";
+        sortTable(0, isAscending);
+        headerCells[0].setAttribute("data-sort", isAscending ? "desc" : "asc");
+    });  // Сортировка по первой колонке (название)
+
+    headerCells[1].addEventListener("click", () => {
+        const isAscending = headerCells[1].getAttribute("data-sort") === "asc";
+        sortTable(1, isAscending);
+        headerCells[1].setAttribute("data-sort", isAscending ? "desc" : "asc");
+    });  // Сортировка по второй колонке (оценка)
+
+    // Фильтрация таблицы по выбранному значению в фильтре
+    const filterBox = document.getElementById("filterBox");
+    filterBox.addEventListener("change", function() {
+        const selectedValue = filterBox.value;
+
+        const rows = document.querySelectorAll("tbody tr");
+        rows.forEach(row => {
+            const rating = row.querySelector(".rating") ? row.querySelector(".rating").textContent : null;
+
+            // Показываем только те строки, чья оценка соответствует выбранной
+            if (rating !== null && (selectedValue === "" || rating === selectedValue)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
+    // Обработчик кликов по строкам таблицы для раскрытия информации
+    function addRowClickEvent() {
+        const rows = document.querySelectorAll("tbody tr:not(.details)");
+        rows.forEach(row => {
+            row.removeEventListener('click', toggleDetails); // Удаляем старый обработчик
+            row.addEventListener('click', toggleDetails); // Добавляем новый обработчик
+        });
+    }
+
+    // Функция для отображения или скрытия дополнительной информации
+    function toggleDetails(event) {
+        const detailsRowClass = event.target.closest('tr').getAttribute('data-details'); // Получаем класс для строки с деталями
+        const detailsRow = document.querySelector(`.details.${detailsRowClass}`);
+        
+        if (detailsRow) {
+            // Переключаем видимость строки с дополнительной информацией
+            detailsRow.style.display = (detailsRow.style.display === "none" || detailsRow.style.display === "") ? "table-row" : "none";
+        }
+    }
+
+    // Функция для поиска в таблице и строках с дополнительной информацией
+    function searchTable() {
+        const searchQuery = document.getElementById('searchBox').value.toLowerCase();
+        const rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(row => {
+            const mainRowText = row.textContent.toLowerCase(); // Ищем в основной строке
+            const detailsRow = document.querySelector(`.details.${row.getAttribute('data-details')}`);
+            const detailsText = detailsRow ? detailsRow.textContent.toLowerCase() : ''; // Ищем в строках с деталями
+
+            if (mainRowText.includes(searchQuery) || detailsText.includes(searchQuery)) {
+                row.style.display = "";
+                if (detailsRow) detailsRow.style.display = ""; // Показываем строку с деталями
+            } else {
+                row.style.display = "none";
+                if (detailsRow) detailsRow.style.display = "none"; // Скрываем строку с деталями
+            }
+        });
+    }
+
+    // Обработчик для поиска
+    document.getElementById('searchBox').addEventListener('input', searchTable);
+
+    // Инициализация обработчиков кликов при загрузке страницы
+    addRowClickEvent();
+
+</script>
+
+</body>
+</html>
