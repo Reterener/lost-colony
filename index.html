@@ -32,20 +32,25 @@
     }
 </script>
 
-<body>
+<body onload="loadPage('content/default.html')">
         <div id="navigation" style="background-color: #96ade9; float:left; width:19%; border: 1px solid black; height:100%; font-family: Courier New;"> 
             <center><h1>Lost Colony v0.1</h1></center>
-            <p style="margin-left:10px">Меню</p>
+            <p style="margin-left:10px" onclick="loadPage('content/default.html')">Введение</p>
                 <ul>
-                    <li onclick="hide('group1')">Часть 1</li>
-                        <ul id="group1" style="display:none">    
-                            <li><a>Подраздел 1</a></li>
-                            <li><a>Подраздел 2</a></li>
-                        </ul>
-                    <li onclick="loadPage('content/part_1/a.html')">Часть 2</li>
-                    <li>Часть 3</li>
-                    <li>Часть 4</li>
-                    <li>Часть 5</li>
+                    <h3>Меню</h3>
+                    <li onclick="loadPage('content/part_1/main.html')">Часть 1: Отличия от Dungeons & Dragons 5e и дополнительные правила</li>
+                    <li onclick="loadPage('content/part_2/char.html')">Часть 2: Создание персонажа</li>
+                    <li>Часть 3: Классы</li>
+                    <ul id="group3" style="display:none">
+                        <li onclick="loadPage('content/part_6/about.html')">О классах</li> 
+                        <li onclick="loadPage('content/part_6/about.html')">Инженер</li> 
+                        <li onclick="loadPage('content/part_6/shieldModule.html')">Коммандос</li>
+                        <li onclick="loadPage('content/part_6/weapon.html')">Оперативник</li>
+                        <li onclick="loadPage('content/part_6/armor.html')">Офицер</li>
+                        <li onclick="loadPage('content/part_6/gear.html')">Пехотинец</li>
+                    </ul>
+                    <li>Часть 4: Техники</li>
+                    <li>Часть 5: Черты</li>
                     <li onclick="hide('group6')">Часть 6: Снаряжение</li>
                         <ul id="group6" style="display:none">   
                             <li onclick="loadPage('content/part_6/about.html')">Информация, Свойства</li> 
