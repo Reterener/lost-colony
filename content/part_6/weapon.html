@@ -4,14 +4,11 @@
     </head>
     <script>
         function myFunction() {
-          // Declare variables
           var input, filter, table, tr, td, i, txtValue;
           input = document.getElementById("myInput");
           filter = input.value.toUpperCase();
           table = document.getElementById("myTable");
           tr = table.getElementsByTagName("tr");
-        
-          // Loop through all table rows, and hide those who don't match the search query
           for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
             if (td) {
@@ -20,62 +17,6 @@
                 tr[i].style.display = "";
               } else {
                 tr[i].style.display = "none";
-              }
-            }
-          }
-          colorizeTable();
-        }
-
-        function sortTable(n) {
-          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-          table = document.getElementById("myTable");
-          switching = true;
-          // Set the sorting direction to ascending:
-          dir = "asc"; 
-          /* Make a loop that will continue until
-          no switching has been done: */
-          while (switching) {
-            // Start by saying: no switching is done:
-            switching = false;
-            rows = table.rows;
-            /* Loop through all table rows (except the
-            first, which contains table headers): */
-            for (i = 1; i < (rows.length - 1); i++) {
-              // Start by saying there should be no switching:
-              shouldSwitch = false;
-              /* Get the two elements you want to compare,
-              one from current row and one from the next: */
-              x = rows[i].getElementsByTagName("TD")[n];
-              y = rows[i + 1].getElementsByTagName("TD")[n];
-              /* Check if the two rows should switch place,
-              based on the direction, asc or desc: */
-              if (dir == "asc") {
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                  // If so, mark as a switch and break the loop:
-                  shouldSwitch= true;
-                  break;
-                }
-              } else if (dir == "desc") {
-                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                  // If so, mark as a switch and break the loop:
-                  shouldSwitch= true;
-                  break;
-                }
-              }
-            }
-            if (shouldSwitch) {
-              /* If a switch has been marked, make the switch
-              and mark that a switch has been done: */
-              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-              switching = true;
-              // Each time a switch is done, increase this count by 1:
-              switchcount ++;      
-            } else {
-              /* If no switching has been done AND the direction is "asc",
-              set the direction to "desc" and run the while loop again. */
-              if (switchcount == 0 && dir == "asc") {
-                dir = "desc";
-                switching = true;
               }
             }
           }
@@ -122,15 +63,11 @@
               }
             }
             if (shouldSwitch) {
-              /* If a switch has been marked, make the switch
-              and mark that a switch has been done: */
               rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
               switching = true;
               // Each time a switch is done, increase this count by 1:
               switchcount ++;      
             } else {
-              /* If no switching has been done AND the direction is "asc",
-              set the direction to "desc" and run the while loop again. */
               if (switchcount == 0 && dir == "asc") {
                 dir = "desc";
                 switching = true;
@@ -138,52 +75,6 @@
             }
           }
           colorizeTable();
-        }
-
-        function filterTableByType() {
-          var input, filter, table, tr, td, i, txtValue;
-          input = document.getElementById("type");
-          filter = input.value.toUpperCase();
-          table = document.getElementById("myTable");
-          tr = table.getElementsByTagName("tr");
-        
-          // Loop through all table rows, and hide those who don't match the search query
-          for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
-            if (td) {
-              txtValue = td.textContent || td.innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1 || filter == "all") {
-                tr[i].style.display = "";
-              } else {
-                tr[i].style.display = "none";
-              }
-            }
-          }
-          colorizeTable();
-        }
-
-        function hide(id) {
-        var x = document.getElementById(id);
-        // скрыть элементы ниже
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-        }
-
-        // функция showRow скрывает строку-отправителя и показывает строку с Id, переданным в параметре
-        function showRow(id) {
-        var y = document.getElementById(id);
-        var x = document.getElementById(id+"2");
-        // скрыть элементы ниже
-        if (x.style.display === "none") {
-            x.style.display = "table-row";
-            y.style.display = "none";
-        } else {
-            x.style.display = "none";
-            y.style.display = "table-row";
-        }
         }
 
         //функция, которая перекрасит строки таблицы
@@ -202,9 +93,87 @@
             }
         }
 
+        let currentSortColumn = null;
+        let currentSortDirection = "asc";
+
+function sortTable(n, isNumeric = false) {
+    let table = document.getElementById("myTable");
+    let rows = Array.from(table.rows).slice(1); // Пропускаем заголовок
+
+    if (currentSortColumn === n) {
+        currentSortDirection = currentSortDirection === "asc" ? "desc" : "asc";
+    } else {
+        currentSortColumn = n;
+        currentSortDirection = "asc";
+    }
+
+    rows.sort((rowA, rowB) => {
+        let cellA = rowA.cells[n];
+        let cellB = rowB.cells[n];
+
+        let valA = cellA.textContent || cellA.innerText;
+        let valB = cellB.textContent || cellB.innerText;
+
+        if (isNumeric) {
+            valA = parseFloat(valA) || 0;
+            valB = parseFloat(valB) || 0;
+        } else {
+            valA = valA.toLowerCase();
+            valB = valB.toLowerCase();
+        }
+
+        if (valA < valB) return currentSortDirection === "asc" ? -1 : 1;
+        if (valA > valB) return currentSortDirection === "asc" ? 1 : -1;
+        return 0;
+    });
+
+    rows.forEach(row => table.appendChild(row));
+    applyFiltersAndSearch(); // Применяем фильтры и поиск после сортировки
+    colorizeTable();
+}
+
+function sortNumeric(n) {
+    sortTable(n, true);
+}
+
+function filterTableByType() {
+    applyFiltersAndSearch(); // Применяем фильтры и поиск
+}
+
+function applyFiltersAndSearch() {
+    let inputSearch = document.getElementById("myInput");
+    let filterSearch = inputSearch.value.toUpperCase();
+    let inputType = document.getElementById("type");
+    let filterType = inputType.value.toUpperCase();
+    
+    let table = document.getElementById("myTable");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+        let tdType = rows[i].getElementsByTagName("td")[1]; // Столбец для типа
+        let tdName = rows[i].getElementsByTagName("td")[0]; // Столбец для названия
+        
+        let txtName = tdName.textContent || tdName.innerText;
+        let txtType = tdType.textContent || tdType.innerText;
+
+        let matchesSearch = txtName.toUpperCase().indexOf(filterSearch) > -1;
+        let matchesType = filterType === "ALL" || txtType.toUpperCase().indexOf(filterType) > -1;
+
+        if (matchesSearch && matchesType) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
+
+    colorizeTable();
+}
+
         </script>
 
     <body onload="sortTable(0)">
+      <h1>Оружие</h1>
+      <i>В списке перечислены только стандартные образцы!</i><br>
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Название..." width="50%">
         <dropdown width="20%" onchange="filterTableByType()">
             <select id="type" name="type">
@@ -217,7 +186,6 @@
                 <option value="Экспертное огнестрельное">Экспертное огнестрельное</option>
             </select>
         </dropdown>
-        
         <table id="myTable">
           <tr class="header">
             <th onclick="sortTable(0)">Название <img src="../../img/svg/filter.png" width="11px"></th>
@@ -228,7 +196,7 @@
             <th>Свойства</th>
             <th onclick="sortNumeric(6)">Цена <img src="../../img/svg/filter.png" width="11px"></th>
           </tr>
-            <tr>
+          <tr>
                 <td>Кастет</td>
                 <td>Простое рукопашное</td>
                 <td>1d8 физический</td>
