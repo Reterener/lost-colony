@@ -17,6 +17,10 @@ th {
     cursor: pointer;
 }
 
+summary{
+    font-size: 25px;
+}
+
 .details {
     display: none; /* Скрываем строки с дополнительной информацией по умолчанию */
 }
@@ -73,3 +77,48 @@ th {
 #myTable td:nth-child(1), #infoTable td:nth-child(1) {  
     font-size: 20px;
   }
+
+  #mainOption{
+    color: #1742ad;
+    margin-bottom: 5px;
+}
+
+#subclassOption{
+    color:   #ff7a07            ;
+    margin-bottom: 5px;
+}
+
+#classTable tr:nth-child(2n) {  
+    font-size: 20px;
+    background-color: #96ade9;
+    height: 25px;
+}
+
+#classTable tr:nth-child(2n+1) {  
+    font-size: 20px;
+    background-color: #f1f1f1;
+    height: 25px;
+}
+
+#classTable, #classStart {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 1px solid #ddd; /* Add a grey border */
+    font-size: 18px; /* Increase font-size */
+}
+
+#classTable th, #classTable td{
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+}
+
+#classTable tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd;
+}
+
+#classDescription h1, h2, h3{
+    border-bottom: 2px solid #1742ad; /* Параметры линии под текстом */
+    font-weight: normal; /* Убираем жирное начертание */
+    padding-bottom: 5px; /* Расстояние от текста до линии */
+}
