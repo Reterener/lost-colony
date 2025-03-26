@@ -76,9 +76,9 @@ summary{
 
 #myTable td:nth-child(1), #infoTable td:nth-child(1) {  
     font-size: 20px;
-  }
+}
 
-  #mainOption{
+#mainOption{
     color: #1742ad;
     margin-bottom: 5px;
 }
@@ -117,7 +117,7 @@ summary{
     border-bottom: 1px solid #ddd;
 }
 
-#classDescription h1, h2, h3{
+#classDescription h1, #classDescription h2, #classDescription h3{
     border-bottom: 2px solid #1742ad; /* Параметры линии под текстом */
     font-weight: normal; /* Убираем жирное начертание */
     padding-bottom: 5px; /* Расстояние от текста до линии */
