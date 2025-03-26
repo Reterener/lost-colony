@@ -13,6 +13,11 @@ h1, h2, h3, h4, b
       color:  #1742ad;
 }
 
+h3, h4, h5, h6
+{
+    font-weight: normal; /* Убираем жирное начертание */
+}
+
 th {
     cursor: pointer;
 }
