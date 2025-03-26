@@ -122,7 +122,7 @@ summary{
     border-bottom: 1px solid #ddd;
 }
 
-#classDescription h1, #classDescription h2, #classDescription h3{
+#classDescription h1, #classDescription h2, #classDescription h3, h1, h2{
     border-bottom: 2px solid #1742ad; /* Параметры линии под текстом */
     font-weight: normal; /* Убираем жирное начертание */
     padding-bottom: 5px; /* Расстояние от текста до линии */
