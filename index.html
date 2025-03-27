@@ -19,8 +19,19 @@
         }
     }
 
-    function loadPage(page) {
+    function loadPage(page, element) {
         document.getElementById('iframe').src = page;
+
+        // Удаляем маркеры и выделение у всех элементов списка
+        let menuItems = document.querySelectorAll('#navigation li, #navigation p');
+        menuItems.forEach(item => {
+            item.style.fontWeight = 'normal';
+            item.textContent = item.textContent.trim().replace('--> ', '');
+        });
+
+        // Добавляем маркер и выделение кликнутому элементу
+        element.textContent = `--> ${element.textContent.trim()}`;
+        element.style.fontWeight = 'bold';
     }
 
     function setHeight() {
@@ -38,33 +49,33 @@
             <p style="margin-left:10px" onclick="loadPage('content/default.html')">Введение</p>
                 <ul>
                     <h3>Меню</h3>
-                    <li onclick="loadPage('content/part_1/main.html')">Часть 1: Отличия от Dungeons & Dragons 5e и дополнительные правила</li>
-                    <li onclick="loadPage('content/part_2/char.html')">Часть 2: Создание персонажа</li>
+                    <li onclick="loadPage('content/part_1/main.html', this)">Часть 1: Отличия от Dungeons & Dragons 5e и дополнительные правила</li>
+                    <li onclick="loadPage('content/part_2/char.html', this)">Часть 2: Создание персонажа</li>
                     <li onclick="hide('group3')">Часть 3: Классы</li>
                     <ul id="group3" style="display:none">
-                        <li onclick="loadPage('content/part_3/about.html')">О классах</li> 
-                        <li onclick="loadPage('content/part_3/engineer.html')">Инженер</li> 
-                        <li onclick="loadPage('content/part_3/commando.html')">Коммандос</li>
-                        <li onclick="loadPage('content/part_3/medic.html')">Медик (<i>В разработке</i>)</li>
-                        <li onclick="loadPage('content/part_3/operative.html')">Оперативник</li>
-                        <li onclick="loadPage('content/part_3/captain.html')">Офицер (<i>В разработке</i>)</li>
-                        <li onclick="loadPage('content/part_3/infantry.html')">Пехотинец</li>
+                        <li onclick="loadPage('content/part_3/about.html', this)">О классах</li> 
+                        <li onclick="loadPage('content/part_3/engineer.html', this)">Инженер</li> 
+                        <li onclick="loadPage('content/part_3/commando.html', this)">Коммандос</li>
+                        <li onclick="loadPage('content/part_3/medic.html', this)">Медик (<i>В разработке</i>)</li>
+                        <li onclick="loadPage('content/part_3/operative.html', this)">Оперативник</li>
+                        <li onclick="loadPage('content/part_3/captain.html', this)">Офицер (<i>В разработке</i>)</li>
+                        <li onclick="loadPage('content/part_3/infantry.html', this)">Пехотинец</li>
                     </ul>
                     <li onclick="hide('group4')">Часть 4: Техники</li>
                         <ul id="group4" style="display:none">   
-                            <li onclick="loadPage('content/part_4/about.html')">Про техники</li> 
-                            <li onclick="loadPage('content/part_4/techcast.html')">Инженерные</li>
-                            <li onclick="loadPage('content/part_4/medcastA.html')">Медицинские</li>
-                            <li onclick="loadPage('content/part_4/ordersA.html')">Приказы</li>
+                            <li onclick="loadPage('content/part_4/about.html', this)">Про техники</li> 
+                            <li onclick="loadPage('content/part_4/techcast.html', this)">Инженерные</li>
+                            <li onclick="loadPage('content/part_4/medcastA.html', this)">Медицинские</li>
+                            <li onclick="loadPage('content/part_4/ordersA.html', this)">Приказы</li>
                         </ul>
-                    <li onclick="loadPage('content/part_5/feats.html')">Часть 5: Черты</li>
+                    <li onclick="loadPage('content/part_5/feats.html', this)">Часть 5: Черты</li>
                     <li onclick="hide('group6')">Часть 6: Снаряжение</li>
                         <ul id="group6" style="display:none">   
-                            <li onclick="loadPage('content/part_6/about.html')">Информация, Свойства</li> 
-                            <li onclick="loadPage('content/part_6/weapon.html')">Оружие</li>
-                            <li onclick="loadPage('content/part_6/armor.html')">Броня и щиты</li>
-                            <li onclick="loadPage('content/part_6/shieldModule.html')">Модули щитов</li>
-                            <li onclick="loadPage('content/part_6/gear.html')">Прочее снаряжение</li>
+                            <li onclick="loadPage('content/part_6/about.html', this)">Информация, Свойства</li> 
+                            <li onclick="loadPage('content/part_6/weapon.html', this)">Оружие</li>
+                            <li onclick="loadPage('content/part_6/armor.html', this)">Броня и щиты</li>
+                            <li onclick="loadPage('content/part_6/shieldModule.html', this)">Модули щитов</li>
+                            <li onclick="loadPage('content/part_6/gear.html', this)">Прочее снаряжение</li>
                         </ul>
                 </ul>
                 <div style="vertical-align: bottom"><center><i>&copy; Лэпть, 2025</i></center></div>
